@@ -84,6 +84,7 @@
       <button>End Timer</button>
       <button>Console Trace</button>
       <button>Trigger a Global Error</button>
+      <button>Trigger a Custom Error</button>
     </section>
   </main>
 
@@ -91,17 +92,107 @@
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error){
+        throw error;
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns[0].addEventListener('click', a => {
+      console.log("Show Console Log");
+    });
+    errorBtns[1].addEventListener('click', a => {
+      console.error("Show Console Error");
+    });
+    errorBtns[2].addEventListener('click', a => {
+      console.count("Show Console Count");
+    });
+    errorBtns[3].addEventListener('click', a => {
+      console.warn("Show Console Warn");
+    });
+    errorBtns[4].addEventListener('click', a => {
+      var num = 1;
+      let errorMsg = "The number is not equal to 2";
+      console.assert(1 != 2, {num, errorMsg});
+    });
+    errorBtns[5].addEventListener('click', a => {
+      console.clear();
+    });
+    errorBtns[6].addEventListener('click', a => {
+      console.dir(errorBtns[6]);
+    });
+    errorBtns[7].addEventListener('click', a => {
+      console.dirxml(errorBtns[7]);
+    });
+    errorBtns[8].addEventListener('click', a => {
+      console.group("Show Console Group");
+    });
+    errorBtns[9].addEventListener('click', a => {
+      console.groupEnd("Show Console Group End");
+    });
+    errorBtns[10].addEventListener('click', a => {
+      console.table(["CSE","110","BEST"]);
+    });
+    errorBtns[11].addEventListener('click', a => {
+      console.time();
+    });
+    errorBtns[12].addEventListener('click', a => {
+      console.log("Timer Button");
+      console.timeEnd();
+    });
+    errorBtns[13].addEventListener('click', football);
+    function football() {
+      pass()
+    }
+    function pass() {
+      kick()
+    }
+    function kick() {
+      console.trace();
+    }
+    errorBtns[14].addEventListener('click', e => {
+      try {
+        // Bad Code
+        abacadabraaaWIW();
+        Oishi;
+        Kamsahamida;
+      } catch (error){
+        throw error;
+      }
+    });
+
+  // Throw custon error
+  class ValidationError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "ValidationError";
+    }
+  }
+  // function to throw custom error
+  function tryCustom(json) {
+    throw new ValidationError("this is a custom error");
+  }
+
+  errorBtns[15].addEventListener('click', e => {
+      try {
+        let user = tryCustom('{name: Pablo Escobar}');
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          console.log("Wrong data format: " + err.message);
+        } else {
+          throw err;
+        }
+      }
+    });
   </script>
 </body>
 
